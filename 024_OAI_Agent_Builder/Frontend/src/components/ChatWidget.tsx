@@ -8,7 +8,7 @@ export function ChatWidget() {
           return existing;
         }
 
-        const res = await fetch('https://8e5c5acda7a7.ngrok-free.app/api/chatkit/session', {
+        const res = await fetch('https://38a30bf4d507.ngrok-free.app/api/chatkit/session', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
