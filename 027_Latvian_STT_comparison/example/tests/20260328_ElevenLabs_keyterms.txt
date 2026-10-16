@@ -1,0 +1,91 @@
+Mākslīgais intelekts labo kontroldarbus un gatavo uzdevumus skolēniem. Latvijas labāko e-skolotāju pieredze. 
+
+Reti kura tehnoloģija cilvēka ikdienā ienākusi tik strauji, kā tas pēdējos gados noticis ar mākslīgo intelektu. Likumsakarīgi, ka tā ienākusi arī skolās un ne tikai skolēnu mājasdarbos. 
+
+Izrādās, skolotāji ar mākslīgā intelekta palīdzību veido uzdevumus un pat labo kontroldarbus, lai būtiski atvieglotu savu ikdienu un vairāk laika veltītu tieši mācību procesam. 
+
+Par jaunajām iespējām, ko izglītībā ienes mākslīgā intelekta laikmets, LSM.lv stāsta informācijas tehnoloģiju nozarē augstu vērtētie e-skolotāji Kirils Ļebedevs un Egita Petrusa. 
+
+Drīkst izmantot, ja var paskaidrot. 
+
+„Mācību moduļi, kurus es pasniedzu, ir cieši saistīti ar informācijas tehnoloģiju pasauli, tāpēc ikdienā mākslīgo intelektu izmantoju diezgan daudz,” intervijā LSM pastāstīja Kirils Ļebedevs. Viņš ir profesionālās izglītības skolotājs un pasniedz moduļus datorsistēmu tehniķiem un elektronisko sakaru tehniķiem Daugavpils Tehnaloģiju un tūrisma tehnikumā. Pērn informācijas un komunikācijas tehnoloģiju nozares nozīmīgākajā pasākumā „Platīna pele” tika atzīts par vienu no tiem skolotājiem, kurš savā darbā visveiksmīgāk izmanto mākslīgā intelekta un tehnoloģiju sniegtās iespējas. 
+
+Pirmos mākslīgā intelekta rīkus mācību procesam viņš sācis izmantot ap 2023. gadu. Laikā, kad parādījās ChatGPT. Tolaik pieejamie mākslīgā intelekta rīki vēl neesot bijuši tik gudri un datu analīze bieži vien bijusi neprecīza, tāpēc uz tiem nevarēja paļauties. Arī pašiem vēl nebija skaidrs, kā vislabāk ar to darboties un kā formulēt pieprasījumus, lai saņemtu precīzas un pareizas atbildes. Tomēr skolēni visai ātri apguvuši mākslīgā intelekta pamatus un parādījās pirmie gadījumi, kad mākslīgā intelekta veikumu pieteica kā savu. 
+
+Tagad mākslīgo intelektu lieto gan skolotāji, gan audzēkņi. Skolēni saprot, ka skolotāji spēj identificēt mākslīgā intelekta izmantošanu darbos, tāpēc viņi to sākuši izmantot drīzāk kā konsultantu, skaidroja pasniedzējs. 
+
+Mākslīgais intelekts vairs netiek izmantots vienīgi tam, lai kaut ko nokopētu un vienkārši nodotu darbu. Nē, skolēni tagad drīzāk pārjautā neskaidras lietas, meklē kļūdas vai trenējas teorijā. 
+
+Un mēs, skolotāji, vairāk skatāmies nevis uz to, vai viņi to izmanto, bet gan kā viņi to izmanto. Ja skolēns spēj paskaidrot savu darbu un savas izvēles, 
+
+tad mums ir skaidrs, ka viņš saprot tēmu, nevis vienkārši to nokopējis no mākslīgā intelekta atbildēm. 
+
+Būtiski atslogo skolotāju ikdienu. 
+
+Īpaši aktuāla mākslīgā intelekta lietošana esot profesionālajos moduļos datorsistēmu tehniķu, elektronisko sakaru tehniķu un programmētāju apmācībā. 
+
+Šajās jomās ir daudz praktisku lietu, kuras vienkārši nav iespējams iegaumēt. Piemēram, visas Linux operētājsistēma komandas. Tāpēc uzsvars tiek likts nevis uz mehānisku atcerēšanos, bet uz prasmi pareizi formulēt pieprasījumu. Skolēni tiek mācīti, kā uzdot jautājumu tā, lai mākslīgais intelekts konkrētā situācijā spētu piedāvāt jēgpilnu risinājumu, norādīt, kuru komandu vai rīku būtu visatbilstošāk izmantot. 
+
+Jautāts, kā skolēni šo mācījās pirms mākslīgā intelekta rīkiem, skolotājs atbild vienkārši: „Pierakstīja burtnīcās vai meklēja internetā, bet pareizo komandu atrašana prasīja laiku. Stunda ilga četrdesmit minūtes. Un, ja, piemēram, divdesmit minūtes meklēsim kaut ko internetā, neko nepaspēsim izdarīt. Bet tagad ar mākslīgā intelekta palīdzību varam to izdarīt ātrāk.” Viņš arī pastāstīja, ka, prasmīgi lietojot mākslīgā intelekta rīkus, tie var būtiski atslogot skolotāju ikdienu. „Gatavojoties stundām, es ar mākslīgā intelekta palīdzību varu ātri uztaisīt piemērus, skaidrojumus vai uzdevumus dažādiem apguves līmeņiem. 
+
+Tas mākslīgais intelekts bieži palīdz skolēniem saprast kļūdas, piemēram, koda rakstīšanā. 
+
+Mākslīgais intelekts var arī paskaidrot sarežģītākus konceptus vienkāršākā valodā, atvieglot prezentāciju, darba lapu, testu, viktorīnu veidošanu. Arī pārbaudot audzēkņu darbus mākslīgais intelekts palīdz analizēt skolēnu sniegumu, ieteikt individuālus papildu uzdevumus vai piedāvāt resursus, piemēram, video spēles, simulācijas, kas varētu atbilst skolēnu vajadzībām.” Dažreiz arī kontroldarbu, īpaši apjomīgo labošanu skolotājs uztic mākslīgajam intelektam, 
+
+lai šis process būtu efektīvāks, precīzāks un ātrāks, bet pašam būtu vairāk laika sagatavoties stundām un veltīt laiku darbam ar audzēkņiem. 
+
+Astoņdesmit četri procenti uzskata - skolotājiem jāmāk darboties ar tehnoloģijām. 
+
+LSM.lv un Norstat veiktajā sabiedriskās domas aptaujā izzīmējās pārliecinošs vērtējums.Lielākā daļa aptaujāto uzskata, ka informācijas tehnoloģiju un mākslīgā intelekta rīku pārvaldīšana skolotāju darbā mūsdienās ir nepieciešama. 
+
+Gandrīz puse respondentu norādīja, ka šādām prasmēm būtu jābūt ikvienam skolotājam. Savukārt vēl trešdaļa uzskata, ka pietiek ar pamata līmeni, lai digitālos rīkus varētu izmantot mācību procesā. 
+
+Kā profesionālās izglītības skolotājs IT jomā es šos aptaujas rezultātus vērtēju kā loģiskus un atbilstošus tam, ko ikdienā redzu darbā ar audzēkņiem un kolēģiem. Tas, ka četrdesmit četri procenti respondentu uzskata, skolotājiem mūsdienās ir jāprot pārvaldīt IT un mākslīgā intelekta rīki, apliecina, ka sabiedrība skaidri apzinās tehnoloģiju neatgriezenisko ienākšanu izglītībā un darba tirgū, rezultātus komentēja Ļevaņevs. 
+
+Viņš arī piebilda: fakts, ka trešdaļa aptaujāto uztver pamata līmeņa IT un MI prasmju pietiekamību, ir saprotams, jo no pedagoga tikot gaidīta nevis tehnoloģiju radīšana, bet spēja tās izmantot mācībās. 
+
+Profesionālajā izglītībā tam esot īpaša nozīme, jo audzēkņi jau skolas laikā strādā ar rīkiem, kas vēlāk būs daļa no viņu ikdienas darba. 
+
+No savas pieredzes varu teikt, ka MI rīki var būt ļoti efektīvs atbalsts gan mācību materiālu sagatavošanā, gan diferencētā mācību procesā, taču tikai tad, ja skolotājs saprot to iespējas un ierobežojumus. 
+
+Tāpēc aptaujas rezultāti, manuprāt, apliecina pie-nepieciešamību sistemātiskas un praktiski orientētas pedagogu profesionālās pilnveides informācijas tehnoloģiju un mākslīgā intelekta jomā, nevis fragmentāriem vai formāliem risinājumiem. 
+
+Mākslīgais intelekts kā autoritāte. 
+
+Egita Petrusa strādā Dobeles pirmajā vidusskolā par datorikas skolotāju, un arī viņas darbā mākslīgais intelekts ir kļuvis par ikdienas rīku. 
+
+Viņa Latvijas Informācijas un komunikācijas tehnoloģiju asociācijas skatījumā ir viena no pērnā gada labākajiem e-skolotājiem, īpaši izceļot atbildīga un ētiska mākslīgā intelekta pielietojuma mācīšanu. 
+
+Skolotāja Petrusa mākslīgo intelektu izmanto gan mācību satura sagatavošanā, gan stundās un skolēnu individuālajam atbalstam, darbā iesaistot tādus risinājumus kā Copilot, Gemini, ChatGPT un citus līdzīgus rīkus. 
+
+Viņa īpaši uzsvēra, ka mākslīgais intelekts ļauj vairāk laika veltīt ikdienas darbam ar skolēniem, vienlaikus mācot arī atbildīgu un ētisku mākslīgā intelekta lietošanu. 
+
+Skolotāja gan norādīja uz joprojām aktuālu problēmu. Viņas pieredzē lielākā daļa skolēnu mākslīgo intelektu izmanto aktīvi, taču ne vienmēr jēgpilni. 
+
+Jaunieši labi zina, kā dabūt rezultātu, bet daudz retāk saprot, kāpēc, kad un ar kādiem rīkiem to darīt, skaidroja pasniedzēja. 
+
+Viņa novērojusi, ka mākslīgais intelekts tiek uztverts kā tāds virziens un līdz ar to pašiem vairs nav vajadzības iedziļināties. Mākslīgā intelekta sniegtās atbildes nereti tiekot pieņemtas kā galīgā patiesība, nevis kā sākumpunkts domāšanai un mācīšanās procesam. 
+
+Praksē tas izpaužas ļoti konkrēti. Ja mākslīgais intelekts ir sniedzis atbildi, tā tiek pieņemta kā neapstrīdama patiesība. Skolēni atbildes nepārbauda, nesalīdzina dažādus avotus un bieži vien nespēj paskaidrot, kāpēc konkrētais risinājums ir pareizs. 
+
+Lai no šādām situācijām izvairītos, skolotājam ir jāmaina jautājumu uzdošanas pieeja, pārejot no vienkāršā, kāda ir atbilde, uz būtiskāko, kāpēc šī atbilde ir pareiza vai nepareiza, skaidroja skolotāja. 
+
+Petrusa norādīja, ka viņa apzināti māca, kā mākslīgo intelektu izmantot korekti un jēgpilni datorikas stundās, projektu darbos un arī atsevišķiem skolotājiem personīgi. Tomēr tas pagaidām vēl nav nostiprinājies kā visas skolas kopīga prakse. 
+
+Vai mākslīgais intelekts mainīs izglītību? Runājot par mākslīgā intelekta ietekmi uz skolu un mācīšanās nākotni, skolotāja Petrusa atzina, ka pārmaiņas jau ir sākušās un ilgtermiņā tās skars arī pašu mācīšanās koncepciju. Šīs izmaiņas nav ne pozitīvas, ne negatīvas, uzsvēra skolotāja. Kā ieguvumus viņa minēja ātru piekļuvi informācijai, iespēju saņemt skaidrojumus citā veidā un atbalstu ideju ģenerēšanā radošajos darbos. Vienlaikus pastāv arī riski. Domraksti un referāti bez analīzes, faktu sausa atstāstīšana un situācijas, kurā vairs nav skaidrs skolēnu reālais ieguldījums, kā rezultātā pazūd mācīšanās jēga. 
+
+Petrusa arī uzsvēra, ka skolēni mākslīgo intelektu izmanto neatkarīgi no mācību priekšmeta, taču atšķirīgā līmenī un ar dažādiem mērķiem. Ja skolotājs mākslīgo intelektu nepārzina, viņš nespēj noteikt robežas, viņa skaidro, piebilstot, ka skolotājam jāprot atpazīt tipisku mākslīgā intelekta radītu darbu un prasīt kontroljautājumus, lai skolēns varētu parādīt, ka darbu veicis pats, nevis ar mākslīgā intelekta palīdzību.Skolotājs mākslīgā intelekta radītu darbu varot pamanīt pēc vairākām pazīmēm. Teksts mēdz būt pārāk vispārīgs, bez konkrētiem piemēriem vai arī tajā parādās jēdzieni, kurus skolēns iepriekš nav apguvis. Nereti darbs ir stilistiski pārāk labs, salīdzinot ar skolēna iepriekšējiem darbiem, kuros šāds līmenis nav bijis raksturīgs. Ja darbā jānorāda informācijas avoti, bieži atsauču nav vai ir ļoti vispārīgas. Skolēni mēdz teikt, ka tās aizmirsuši pievienot. Savukārt skolēns, kurš darbu veidojis pats, parasti spēj ne tikai paskaidrot rezultātu, bet arī atceras pašu darba tapšanas procesu. Vienlaikus skolotāji uzsvēra – mērķis ne vienmēr ir pieķert skolēnu mākslīgā intelekta izmantošanā, bet gan pārliecināties par viņa izpratni. 
+
+Ja skolēns spēj paskaidrot, argumentēt un reflektēt par paveikto, mācīšanās ir notikusi neatkarīgi no tā, kādi rīki darba tapšanā izmantoti. Skolotājam ir jāsaprot, kas ir mākslīgais intelekts. Jāzina, kā skolēni to izmanto konkrētajā mācību priekšmetā un jāspēj skaidri pateikt, kad mākslīgais intelekts ir atļauts, kad nav un kāpēc. Tas ir līdzīgi kā digitālā pratība. 
+
+Par mākslīgā intelekta vietu skolotāja darbā līdzīgās domās ir arī skolotājs Kirils Ļevaņevs, kurš uzskata, ka šo rīku pārvaldība kļūst nepieciešama visiem pedagogiem neatkarīgi no mācību priekšmeta, arī, piemēram, valodu vai ģeogrāfijas skolotājiem. Mākslīgais intelekts nav problēma. Problēma ir mūsu bailes no tā. 
+
+Skolēni to jau izmanto neatkarīgi no tā, ko rakstām nolikumos. Ja skolā joprojām var nokārtot eksāmenu, neko īsti nesaprotot, tad mākslīgais intelekts vienkārši to izgaismo. 
+
+Aizliegt to ir viegli, bet tas neatrisina neko. Grūtāk ir mainīt uzdevumus un mācīšanās pieeju tā, lai domāšana būtu svarīgāka par rezultāta formu. Un šī ir atbildība, no kuras skolotāji vairs nevar izvairīties. 
+
+Un, jo agrāk skolotāji paši iepazīsies ar mākslīgo intelektu, jo vieglāk būs arī skolēniem iemācīt to lietot godīgi un jēgpilni. 
+
+Viņš norādīja, ka skolotāji arvien aktīvāk interesējas par mākslīgā intelekta izmantošanu gadījumos, kad nepieciešams atbalsts darbā ar šiem vai citiem digitālajiem rīkiem, kolēģiem tas tiek sniegts. Gluži kā internets ir kļuvis par ikdienu skolotāja darbā, tuvākajā nākotnē tāds būs arī mākslīgais intelekts. Nākotnē skolotājs būs kā vadītājs, kurš palīdz jauniešiem apgūt prasmes, strādājot kopā ar tehnoloģijām. Skolotāja darbu, viņaprāt, mākslīgais intelekts gan nespēs aizstāt. 
+
+Cilvēcisks kontakts, atbalsts, iedvesma – to mākslīgais intelekts nespēs sniegt. Tas atvieglos kaut kādus rutīnas darbus un ļaus vairāk laika veltīt radošai, jēgpilnai mācīšanai, viņš piebilda.

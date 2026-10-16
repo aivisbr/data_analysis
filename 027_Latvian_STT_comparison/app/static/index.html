@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="lv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Salīdzini runas atpazīšanas modeļus latviešu valodas diktātā.">
+  <title>Diktāts · Runas atpazīšanas salīdzinājums</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+  <script src="/static/results.js" defer></script>
+  <script src="/static/audio.js?v=T015" defer></script>
+  <script src="/static/file-jobs.js?v=T015b" defer></script>
+  <script src="/static/capture-core.js?v=T016" defer></script>
+  <script src="/static/live-ingest.js?v=T023" defer></script>
+  <script src="/static/capture.js?v=T023" defer></script>
+  <script src="/static/live-history.js?v=T023" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <header class="masthead">
+      <a class="brand" href="/" aria-label="Diktāts — sākumlapa"><span class="brand-mark" aria-hidden="true">ā</span> Diktāts</a>
+      <span class="connection" id="connection" role="status">Pārbauda savienojumu…</span>
+    </header>
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">LATVIEŠU VALODA · RUNAS ATPAZĪŠANA</p>
+      <h1 id="page-title">Viens diktāts.<br>Vairāki pieraksti.</h1>
+      <p class="lead">Salīdzini, kā dažādi modeļi sadzird vienu un to pašu tekstu — vārdus, diakritiskās zīmes un pieturzīmes.</p>
+    </section>
+    <div class="workspace">
+      <div class="tabs" role="tablist" aria-label="Lietotnes sadaļas">
+        <button id="tab-live" type="button" role="tab" aria-selected="true" aria-controls="panel-live" tabindex="0">Tiešraide</button>
+        <button id="tab-file" type="button" role="tab" aria-selected="false" aria-controls="panel-file" tabindex="-1">Audio fails</button>
+        <button id="tab-results" type="button" role="tab" aria-selected="false" aria-controls="panel-results" tabindex="-1">Rezultāti</button>
+      </div>
+      <section class="panel" id="panel-live" role="tabpanel" aria-labelledby="tab-live" tabindex="0">
+        <p class="eyebrow">KLAUSIES KOPĀ</p>
+        <h2>Audio no pārlūka cilnes</h2>
+        <p>Izvēlies diktāta pārraides cilni un salīdzini modeļu pierakstus lasījuma laikā.</p>
+        <div class="reading-notes">
+          <div><span class="reading-label">A</span><strong>Pirmais pilnais lasījums</strong><p>Saglabā pirmo diktāta pierakstu.</p></div>
+          <div><span class="reading-label">D</span><strong>Pēdējais pilnais lasījums</strong><p>Salīdzini otru lasījumu atsevišķi.</p></div>
+        </div>
+        <div class="models-section" data-mode="live">
+          <div class="models-heading"><div><h3>Transkripcijas modeļi</h3><p class="selection-count" id="count-live"></p></div><button type="button" class="primary add-model" data-mode="live">Pievienot modeli</button></div>
+          <div id="models-live" class="model-list" aria-label="Tiešraides modeļi"></div>
+        </div>
+        <section aria-label="Cilnes audio ieraksts" class="input-card">
+          <h3>Vietējais audio ieraksts</h3>
+          <label>Lasījums<select id="capture-reading"><option value="A">A · Try1</option><option value="D">D · Try2</option></select></label>
+          <label><input id="capture-demo" type="checkbox"> Bezmaksas DEMO: saglabāt audio un izmēģināt modeļu rindas serverī</label>
+          <label><input id="capture-paid" type="checkbox" disabled> Maksas tiešraide: transkribēt ieslēgtajos modeļos</label>
+          <p id="capture-paid-help" class="hint" role="status">Ielādē tiešraides atļaujas…</p>
+          <p id="capture-backend" class="hint" role="status">Bez izvēlēta servera režīma audio paliek tikai pārlūkā.</p>
+          <p>Spied Sākt, izvēlies diktāta cilni un ieslēdz cilnes audio kopīgošanu. DEMO saglabā audio un sintētisku tekstu serverī; Maksas tiešraide nosūta audio ieslēgtajiem modeļiem. Bez šīm izvēlēm WAV jālejupielādē pašam. Pauzes laikā audio modeļiem netiek nosūtīts. Sagaidi noslēgšanu pirms lapas aizvēršanas.</p>
+          <div class="evaluation-actions"><button id="capture-start" type="button" class="primary">Sākt</button><button id="capture-pause" type="button" disabled>Pauzēt</button><button id="capture-resume" type="button" disabled>Turpināt</button><button id="capture-stop" type="button" disabled>Apturēt</button></div>
+          <p id="capture-state">Nav sākts</p>
+          <label>Audio līmenis<meter id="capture-level" min="0" max="1" value="0" aria-label="Cilnes audio līmenis"></meter></label>
+          <p id="capture-stats" class="hint">Audio kadri vēl nav saņemti.</p>
+          <p id="capture-status" role="status" aria-live="polite">Saglabā katru lasījumu atsevišķi. Ieraksts glabājas pārlūkā līdz WAV lejupielādei.</p>
+          <div id="capture-downloads" class="export-links"></div>
+        </section>
+        <section class="input-card" aria-label="Tiešraides izpilžu vēsture">
+          <h3>Tiešraides izpilžu vēsture</h3>
+          <p>DEMO teksti ir sintētiski. Pēc lapas aizvēršanas vai servera pārstartēšanas saglabātie rezultāti paliek diskā; audio uztveršana automātiski neturpinās.</p>
+          <label>Izpilde<select id="live-history-select"></select></label>
+          <button id="live-history-refresh" type="button">Atjaunot vēsturi</button>
+          <p id="live-history-status" role="status">Ielādē vēsturi…</p>
+          <div id="live-history-results"></div>
+        </section>
+      </section>
+      <section class="panel" id="panel-file" role="tabpanel" aria-labelledby="tab-file" tabindex="0" hidden>
+        <p class="eyebrow">SALĪDZINI IERAKSTU</p>
+        <h2>Viens audio fails visiem modeļiem</h2>
+        <p>Izmanto saglabātu diktāta ierakstu, lai modeļi saņemtu vienu un to pašu audio.</p>
+        <div class="file-note"><span aria-hidden="true">♪</span><p>Pēc transkripcijas katra modeļa pieraksts būs saglabāts teksta failā. Rediģējamo kopiju varēsi pārbaudīt pret diktāta pareizo tekstu.</p></div>
+        <fieldset id="audio-controls" class="evaluation-controls">
+          <legend>Audio sagatavošana</legend>
+          <label>Audio fails (līdz 250 MB, 2 stundām)<input id="audio-file" type="file" accept=".wav,.mp3,.m4a,.mp4,.webm,.ogg,.flac,.aac"></label>
+          <button id="upload-audio" type="button">Augšupielādēt audio</button>
+          <label>Saglabātie ieraksti<select id="audio-select"></select></label>
+          <p id="audio-info" class="hint"></p>
+          <audio id="audio-preview" controls preload="metadata" aria-label="Pilnā ieraksta priekšskatījums"></audio>
+          <div class="form-grid">
+            <label>Lasījums<select id="audio-reading"><option value="A">A · Try1</option><option value="D">D · Try2</option></select></label>
+            <label>Sākums (sekundes)<input id="audio-start" type="text" inputmode="decimal" value="0"></label>
+            <label>Beigas (sekundes)<input id="audio-end" type="text" inputmode="decimal"></label>
+          </div>
+          <p class="hint">Atstāj beigas tukšas, lai izmantotu ieraksta beigas. Pieņem arī komatu. Katram lasījumam sagatavo savu intervālu.</p>
+          <button id="prepare-audio" class="primary" type="button">Sagatavot izvēlēto intervālu</button>
+        </fieldset>
+        <p id="audio-status" role="status" aria-live="polite"></p>
+        <div id="audio-prepared" hidden><p id="audio-prepared-info" class="path-text"></p><audio id="interval-preview" controls preload="metadata" aria-label="Izvēlētā intervāla priekšskatījums"></audio></div>
+        <div class="models-section" data-mode="file">
+          <div class="models-heading"><div><h3>Transkripcijas modeļi</h3><p class="selection-count" id="count-file"></p></div><button type="button" class="primary add-model" data-mode="file">Pievienot modeli</button></div>
+          <div id="models-file" class="model-list" aria-label="Audio failu modeļi"></div>
+        </div>
+        <div class="evaluation-actions"><button id="start-demo-job" type="button">Izmēģināt ar DEMO modeļiem</button><button id="start-paid-job" type="button" class="primary" disabled>Sākt transkripciju</button></div>
+        <p id="file-job-status" role="status" aria-live="polite"></p>
+        <p class="hint">DEMO izmanto izdomātu tekstu un simulētu Gemini kļūdu, bez API pieprasījumiem. Maksas izpildei vajadzīga servera atļauja; dolāru limits automātiski netiek piemērots. Abos režīmos izmanto tikai ieslēgtos modeļus un parādīto sagatavoto intervālu.</p>
+        <label>Failu izpilžu vēsture<select id="file-job-history"></select></label><button id="open-file-job" type="button">Atvērt izpildi</button>
+        <div id="file-job-output"></div>
+      </section>
+      <section class="panel" id="panel-results" role="tabpanel" aria-labelledby="tab-results" tabindex="0" hidden>
+        <p class="eyebrow">PĀRBAUDI PIERAKSTU</p>
+        <h2>Salīdzini ar pareizo tekstu</h2>
+        <p>Izvēlies etalonu un transkriptus. Aprēķins notiek šajā datorā, bez maksas modeļu API pieprasījumiem.</p>
+        <fieldset id="evaluation-controls" class="evaluation-controls">
+          <legend class="visually-hidden">Vērtēšanas ievades</legend>
+          <div class="form-grid">
+            <label>Lasījums<select id="eval-reading"><option value="A">A · Try1 · pirmais lasījums</option><option value="D">D · Try2 · pēdējais lasījums</option></select></label>
+            <label>Transkriptu veids<select id="eval-variant"><option value="raw">Oriģināli</option><option value="edited">Laboti</option></select></label>
+          </div>
+          <div class="import-grid">
+            <div class="input-card"><h3>1. Pareizais teksts</h3><label>Etalona .txt fails<input id="gt-file" type="file" accept=".txt,text/plain"></label><button id="import-gt" type="button">Pievienot etalonu</button><label>Saglabāts etalons<select id="gt-select"></select></label><p id="gt-path" class="path-text"></p></div>
+            <div class="input-card"><h3>2. Modeļu pieraksti</h3><label>Transkriptu .txt faili<input id="hyp-files" type="file" accept=".txt,text/plain" multiple></label><button id="import-hyp" type="button">Pievienot transkriptus</button><p class="hint">Pievienotajiem failiem tiks norādīts pašlaik izvēlētais lasījums un veids.</p></div>
+          </div>
+          <p class="hint">Pēc augšupielādes tiek saglabāta kopija. Labo zemāk norādīto failu šajā datorā vai augšupielādē mainīto oriģinālu vēlreiz. Katrs aprēķins no jauna nolasa izvēlētos failus.</p>
+          <div class="models-heading"><h3>Izvēlies transkriptus</h3><button id="refresh-evaluations" type="button">Atjaunot failus un vēsturi</button></div>
+          <div id="hypothesis-list" class="hypothesis-list"></div>
+          <div class="evaluation-actions"><span id="hypothesis-count" class="hint"></span><button id="calculate-evaluation" type="button" class="primary">Aprēķināt</button></div>
+          <hr>
+          <label>Saglabāto vērtējumu vēsture<select id="evaluation-history"></select></label><button id="open-evaluation" type="button">Atvērt / pabeigt aprēķinu</button>
+        </fieldset>
+        <p id="evaluation-status" role="status" aria-live="polite"></p>
+        <section id="evaluation-output" aria-label="Vērtēšanas rezultāti" hidden></section>
+      </section>
+      <div class="registry-footer"><p id="registry-status" role="status" aria-live="polite">Ielādē modeļus…</p><button type="button" id="refresh-models">Atjaunot sarakstu</button></div>
+    </div>
+    <footer><span>Katram modelim savs pieraksts.</span><span>Tavi rezultāti — šajā datorā.</span></footer>
+  </main>
+  <dialog id="model-dialog" aria-labelledby="model-dialog-title">
+    <form id="model-form" novalidate>
+      <div class="dialog-header"><div><p class="eyebrow" id="dialog-mode"></p><h2 id="model-dialog-title">Modeļa iestatījumi</h2></div><button type="button" class="close-dialog" aria-label="Aizvērt iestatījumus">×</button></div>
+      <div class="form-grid">
+        <label>Nodrošinātājs<select id="model-provider"><option value="openai">OpenAI</option><option value="gemini">Gemini</option><option value="elevenlabs">ElevenLabs</option></select></label>
+        <label>Iespēju profils<select id="model-profile" aria-describedby="profile-help"></select></label>
+        <label class="wide">Modeļa identifikators<input id="model-id" autocomplete="off" maxlength="200" aria-describedby="profile-help"></label>
+        <label class="wide">Nosaukums sarakstā<input id="model-name" autocomplete="off" maxlength="200"></label>
+      </div>
+      <p class="hint" id="profile-help">Profils nosaka pieejamos iestatījumus. Jaunam identifikatoram jāizmanto saderīgs profils.</p>
+      <p id="profile-notes" class="hint"></p>
+      <div id="custom-model-warning" class="notice" hidden><p>Šis identifikators nav sākotnējā modeļu sarakstā. Profils nepierāda tā saderību vai pieejamību.</p><label class="check-label"><input id="custom-model-ack" type="checkbox">Apzinos, ka šī modeļa saderība vēl nav pārbaudīta.</label></div>
+      <hr>
+      <h3>Šī modeļa iestatījumi</h3>
+      <p class="hint">Iestatījumi attiecas tikai uz šo saraksta ierakstu. Tie saglabājas arī pēc lietotnes aizvēršanas.</p>
+      <label class="check-label"><input id="language-auto" type="checkbox">Automātiski noteikt valodu</label>
+      <label>Valodas kods<input id="model-language" autocomplete="off" placeholder="lv-LV" aria-describedby="language-help"></label>
+      <p class="hint" id="language-help">ISO 639-1 (lv) vai BCP-47 (lv-LV).</p>
+      <div class="form-grid">
+        <label class="wide">Atslēgvārdi / pielāgota vārdnīca<textarea id="model-keywords" rows="3" aria-describedby="keywords-help" placeholder="Latvija&#10;Raimonds Celms"></textarea></label>
+        <p class="hint wide" id="keywords-help"></p>
+        <label class="wide">Konteksta uzvedne<textarea id="model-prompt" rows="2" aria-describedby="prompt-help"></textarea></label>
+        <p class="hint wide" id="prompt-help"></p>
+        <label>Latentums<select id="model-latency" aria-describedby="latency-help"><option value="">Noklusējums</option><option value="minimal">Minimāls</option><option value="low">Zems</option><option value="medium">Vidējs</option><option value="high">Augsts</option><option value="xhigh">Ļoti augsts</option></select></label>
+        <label>Teksta apstrāde<select id="model-formatting" aria-describedby="formatting-help"><option value="default">Noklusējums</option><option value="verbatim">Burtisks pieraksts</option><option value="smart">Attīrīts pieraksts</option></select></label>
+        <p class="hint" id="latency-help"></p><p class="hint" id="formatting-help"></p>
+        <label>Runas posmu pabeigšana<select id="model-turns" aria-describedby="turns-help"><option value="default">Noklusējums</option><option value="manual">Manuāli</option><option value="automatic">Automātiski pēc pauzes</option></select></label>
+        <label>Secība sarakstā<input id="model-order" type="number" min="0" step="1"></label>
+        <p class="hint wide" id="turns-help"></p>
+      </div>
+      <button type="button" id="reset-settings" class="text-button">Atjaunot iestatījumu noklusējumus</button>
+      <p class="form-error" id="model-error" role="alert" hidden></p>
+      <div class="dialog-actions"><button type="button" class="close-dialog">Atcelt</button><button type="submit" class="primary" id="save-model">Saglabāt</button></div>
+    </form>
+  </dialog>
+  <dialog id="delete-dialog" aria-labelledby="delete-title">
+    <h2 id="delete-title">Dzēst modeli?</h2><p id="delete-name"></p><p>Iepriekšējo izpilžu izvēles un saglabātie faili paliks pieejami.</p>
+    <p class="form-error" id="delete-error" role="alert" hidden></p>
+    <div class="dialog-actions"><button type="button" id="cancel-delete">Atcelt</button><button type="button" id="confirm-delete" class="danger">Dzēst</button></div>
+  </dialog>
+</body>
+</html>
