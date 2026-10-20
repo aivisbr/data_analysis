@@ -39,6 +39,7 @@ If `.venv` already exists, reuse it. Edit `.env` and supply the keys for the pro
 OPENAI_API_KEY=your-openai-key
 GEMINI_API_KEY=your-gemini-key
 ELEVENLABS_API_KEY=your-elevenlabs-key
+MISTRAL_API_KEY=your-mistral-key
 ```
 
 Keep real keys in your local `.env`; only the placeholder `.env.example` belongs in Git. Existing process environment variables take precedence over `.env` values.
@@ -65,7 +66,7 @@ Real provider execution is **disabled by default**, even when keys are configure
 
 | Environment variable | Set to `1` to enable |
 | --- | --- |
-| `P7_ALLOW_PAID_TRANSCRIPTION` | Uploaded-file transcription through OpenAI, Gemini and ElevenLabs. |
+| `P7_ALLOW_PAID_TRANSCRIPTION` | Uploaded-file transcription through OpenAI, Gemini, ElevenLabs and Mistral. |
 | `P7_ALLOW_PAID_LIVE_TRANSCRIPTION` | Live provider transcription. |
 | `P7_ALLOW_PAID_ELEVENLABS_LIVE` | ElevenLabs live transcription, in addition to the general live flag. |
 
@@ -89,8 +90,15 @@ Only enabled models are selected for a new task. Each selected provider may char
 | OpenAI | `gpt-transcribe`, `gpt-live-transcribe`, `gpt-realtime-whisper` | `gpt-transcribe` |
 | Google Gemini | `gemini-3.5-transcribe-live` | `gemini-3.5-transcribe` |
 | ElevenLabs | `scribe_v2_realtime` | `scribe_v2` |
+| Mistral | `voxtral-mini-transcribe-realtime-3-0` | `voxtral-small-transcribe-3-0`, `voxtral-mini-transcribe-3-0` |
 
 These are the exact IDs implemented in this project. Account access and provider availability must be checked for your own keys. The app does not silently replace a model with a different ID.
+
+Mistral entries are added once on the next backend startup, including for existing databases, and start **unchecked**. Enable only the models you want to test. Deleted entries are not added again on later restarts. Mistral uses the existing file/live execution flags; no additional Mistral flag or launcher is required. The previous OpenAI/Gemini test budget does not include Mistral charges.
+
+Voxtral 3 supports language hints (`lv-LV` maps to `lv`) and keywords through `context_bias`. Live latency presets map to 80, 240, 480, 1200 and 2400 ms for minimal, low, medium, high and xhigh respectively; leaving latency unset uses the service default. Prompt, formatting, automatic turn detection, diarization and timestamps are not exposed by these adapters. Pause ends a session and resume starts another; Voxtral 3 deltas are confirmed append-only text and are saved as a growing confirmed span. The service must still return `transcription.done` on pause/stop for the session to count as complete. An API error or missing final acknowledgement leaves the run incomplete, but received text is exported to both TXT copies. Audio uses 100 ms packets and an unchanged final tail; stopping sends `input_audio.end`. Numeric provider error codes and safe error categories are retained without arbitrary provider messages. No audio is padded, replayed or automatically retried.
+
+The native Mistral file SDK is used for uploads. For realtime, the installed SDK's update helper exposes fewer settings than its Voxtral 3 schemas, so the adapter sends those public SDK message schemas over a backend WebSocket. See the [Voxtral 3 migration guide](https://docs.mistral.ai/studio/audio/migrate-from-voxtral-2); older documentation under `/deprecated/` describes Voxtral 2.
 
 Use **Izmantot** (Use) to enable or disable a model, **Iestatījumi** (Settings) to edit it, and **Dzēst** (Delete) to remove its registry entry. Deleting an entry does not delete existing transcripts or history. Model settings and enabled states survive refreshes and server restarts; settings are frozen for each new run.
 

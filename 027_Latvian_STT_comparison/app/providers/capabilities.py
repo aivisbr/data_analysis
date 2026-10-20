@@ -64,6 +64,13 @@ CAPABILITY_PROFILES: tuple[CapabilityProfile, ...] = (
              notes=('Adapteris izmanto manuālus 20 sekunžu apstiprinājumus. VAD robežas vēl nav pārbaudītas; izvēle atspējota. Līdz 50 terminiem, katrs līdz 20 rakstzīmēm. ElevenLabs maksas atļauja ir atsevišķa.',)),
     _profile(Provider.ELEVENLABS, "scribe_v2", Mode.FILE, "completed_file",
              keywords=Support.SUPPORTED, formatting=Support.SUPPORTED),
+    _profile(Provider.MISTRAL, "voxtral-mini-transcribe-realtime-3-0", Mode.LIVE, "streaming",
+             keywords=Support.SUPPORTED, latency=Support.SUPPORTED, input_sample_rates=(16000,),
+             notes=('Voxtral 3: lv-LV → lv. Latentums: minimal=80, low=240, medium=480, high=1200, xhigh=2400 ms. Pauze noslēdz sesiju; turpināšana atver jaunu. Pilnīgai sesijai nepieciešams transcription.done; kļūdas gadījumā saņemtais teksts tiek saglabāts kā nepilnīgs pieraksts. Automātiska posmu vadība šajā adapterī nav iespējota.',)),
+    _profile(Provider.MISTRAL, "voxtral-small-transcribe-3-0", Mode.FILE, "completed_file",
+             keywords=Support.SUPPORTED),
+    _profile(Provider.MISTRAL, "voxtral-mini-transcribe-3-0", Mode.FILE, "completed_file",
+             keywords=Support.SUPPORTED),
 )
 
 

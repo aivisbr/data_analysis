@@ -155,6 +155,9 @@ class ContractTests(unittest.TestCase):
             ("openai", "gpt-live-transcribe", "live"), ("openai", "gpt-realtime-whisper", "live"),
             ("gemini", "gemini-3.5-transcribe-live", "live"), ("gemini", "gemini-3.5-transcribe", "file"),
             ("elevenlabs", "scribe_v2_realtime", "live"), ("elevenlabs", "scribe_v2", "file"),
+            ("mistral", "voxtral-mini-transcribe-realtime-3-0", "live"),
+            ("mistral", "voxtral-small-transcribe-3-0", "file"),
+            ("mistral", "voxtral-mini-transcribe-3-0", "file"),
         })
         live = get_profile("openai:gpt-live-transcribe:live")
         self.assertEqual(live.latency, Support.UNVERIFIED)

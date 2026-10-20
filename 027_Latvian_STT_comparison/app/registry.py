@@ -103,10 +103,27 @@ class ModelRegistry:
                     for index, profile in enumerate(CAPABILITY_PROFILES):
                         entry = ModelEntry(provider=profile.provider, model_id=profile.model_id,
                                            display_name=profile.model_id, mode=profile.mode,
-                                           capability_profile_id=profile.id, order=index)
+                                           capability_profile_id=profile.id, order=index,
+                                           enabled=profile.provider != Provider.MISTRAL)
                         validate_entry(entry)
                         self._insert(db, entry)
                 db.execute("INSERT INTO registry_metadata VALUES ('defaults_seeded', '1')")
+            # One-time additive upgrade: preserve all existing selections and history.
+            # Keep a separate marker so deleting these defaults never resurrects them.
+            if db.execute("SELECT 1 FROM registry_metadata WHERE key='mistral_v3_seeded'").fetchone() is None:
+                rows = db.execute('SELECT payload FROM model_entries').fetchall()
+                entries = [self._decode(ModelEntry, row[0]) for row in rows]
+                present = {(entry.provider, entry.model_id, entry.mode) for entry in entries}
+                position = max((entry.order for entry in entries), default=-1) + 1
+                for profile in CAPABILITY_PROFILES:
+                    if profile.provider == Provider.MISTRAL and (profile.provider, profile.model_id, profile.mode) not in present:
+                        entry = ModelEntry(provider=profile.provider, model_id=profile.model_id,
+                            display_name=profile.model_id, mode=profile.mode, enabled=False,
+                            capability_profile_id=profile.id, order=position)
+                        validate_entry(entry)
+                        self._insert(db, entry)
+                        position += 1
+                db.execute("INSERT INTO registry_metadata VALUES ('mistral_v3_seeded', '1')")
 
     @staticmethod
     def _insert(db, entry: ModelEntry):

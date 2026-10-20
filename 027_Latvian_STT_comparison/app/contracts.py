@@ -24,6 +24,7 @@ class Provider(StrEnum):
     OPENAI = "openai"
     GEMINI = "gemini"
     ELEVENLABS = "elevenlabs"
+    MISTRAL = "mistral"
 
 
 class Mode(StrEnum):

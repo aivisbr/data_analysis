@@ -42,7 +42,7 @@ const byId = (id) => document.getElementById(id);
 const defaults = {language_hint: "lv-LV", keywords: [], prompt: null, latency: null, formatting: "default", turn_detection: "default"};
 let models = [], profiles = [], editing = null, dialogMode = "live", dialogBusy = false, deleteTarget = null;
 let languagePreviewSequence = 0;
-const providerNames = {openai: "OpenAI", gemini: "Gemini", elevenlabs: "ElevenLabs"};
+const providerNames = {openai: "OpenAI", gemini: "Gemini", elevenlabs: "ElevenLabs", mistral: "Mistral"};
 const deliveryNames = {streaming: "Straumēšana", committed_turn: "Pēc runas posma", completed_file: "Audio fails"};
 const supportHelp = (support) => support === "supported" ? "Pieejams šim profilam." : support === "unverified" ? "Atbalsts vēl nav pārbaudīts; izvēle ir atspējota." : "Šis profils šo iestatījumu neatbalsta.";
 

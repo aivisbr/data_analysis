@@ -4,6 +4,9 @@ from app.providers.base import ProviderFailure
 
 
 def paid_live_factory(model, *, elevenlabs_enabled=False):
+    if model.provider == Provider.MISTRAL and model.model_id == 'voxtral-mini-transcribe-realtime-3-0':
+        from app.providers.mistral_live import MistralLiveAdapter
+        return MistralLiveAdapter(allow_paid=True)
     if model.provider == Provider.OPENAI and model.model_id in ('gpt-transcribe', 'gpt-live-transcribe', 'gpt-realtime-whisper'):
         from app.providers.openai_live import OpenAILiveAdapter
         return OpenAILiveAdapter(allow_paid=True,final_timeout_seconds=60)

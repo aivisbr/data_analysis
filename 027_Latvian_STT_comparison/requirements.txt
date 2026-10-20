@@ -9,3 +9,4 @@ python-multipart==0.0.32
 httpx==0.28.1
 websockets==16.1.1
 pydantic==2.14.1
+mistralai[realtime]>=3.3.0

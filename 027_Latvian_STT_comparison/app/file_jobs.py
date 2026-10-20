@@ -28,6 +28,9 @@ class DemoAdapter:
 
 
 def adapter_for(provider):
+    if provider == Provider.MISTRAL:
+        from app.providers.mistral_file import MistralFileAdapter
+        return MistralFileAdapter()
     if provider == Provider.OPENAI:
         from app.providers.openai_file import OpenAIFileAdapter
         return OpenAIFileAdapter()

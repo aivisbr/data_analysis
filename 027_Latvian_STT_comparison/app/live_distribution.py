@@ -143,7 +143,7 @@ class LiveDistribution:
                 model_entry_id=model.entry_id,segment_id=info.segment_id,segment_index=self.segment_index)
             state=dict(model=model,attempt=attempt,context=context,queue=asyncio.Queue(self.queue_size),
                 ready=asyncio.Event(),sending_done=asyncio.Event(),status='preparing',error=None,sent_sequences=[],output_samples=0,
-                target_rate=16000 if model.provider==Provider.GEMINI else 24000, executions=[])
+                target_rate=16000 if model.provider in (Provider.GEMINI,Provider.MISTRAL) else 24000, executions=[])
             old=previous.get(model.entry_id)
             if old:
                 state['error']=old['error']
@@ -270,8 +270,9 @@ class LiveDistribution:
                 'commit_policy':('DEMO synthetic final on flush' if self.execution_mode=='demo'
                     else 'explicit 10 s commits; final tail padded to 100 ms' if state['model'].provider==Provider.OPENAI
                     else 'activity boundary; 10 minute session limit' if state['model'].provider==Provider.GEMINI
+                    else 'confirmed append-only deltas; 100 ms packets + unchanged tail; end on pause/stop; done required for complete' if state['model'].provider==Provider.MISTRAL
                     else 'explicit serialized 20 s commits; unchanged tail'),
-                'padding_samples':0,'sdk_version':version({'openai':'openai','gemini':'google-genai','elevenlabs':'elevenlabs'}[state['model'].provider.value])
+                'padding_samples':0,'sdk_version':version({'openai':'openai','gemini':'google-genai','elevenlabs':'elevenlabs','mistral':'mistralai'}[state['model'].provider.value])
                     if self.execution_mode=='paid' else None}
             state['executions'].append(execution)
             await self._save_distribution()

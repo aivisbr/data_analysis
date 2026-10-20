@@ -27,9 +27,9 @@ class RegistryTests(unittest.TestCase):
     def test_initial_roster_and_independent_modes(self):
         live = self.registry.list(Mode.LIVE)
         files = self.registry.list(Mode.FILE)
-        self.assertEqual(len(live), 5)
-        self.assertEqual(len(files), 3)
-        self.assertEqual(len({m.id for m in (*live, *files)}), 8)
+        self.assertEqual(len(live), 6)
+        self.assertEqual(len(files), 5)
+        self.assertEqual(len({m.id for m in (*live, *files)}), 11)
         file_openai = next(m for m in files if m.model_id == "gpt-transcribe")
         self.registry.update(file_openai.id, {"enabled": False})
         live_openai = next(m for m in self.registry.list(Mode.LIVE) if m.model_id == "gpt-transcribe")
@@ -57,7 +57,7 @@ class RegistryTests(unittest.TestCase):
         first = self.registry.list(Mode.FILE)[0]
         variant = first.evolve(id=uuid4(), display_name="Otrs variants", settings=TranscriptionSettings(language_hint=None))
         self.registry.add(variant)
-        self.assertEqual(len(self.registry.list(Mode.FILE)), 4)
+        self.assertEqual(len(self.registry.list(Mode.FILE)), 6)
         with self.assertRaises(RegistryError):
             self.registry.add(variant)
 
@@ -121,7 +121,7 @@ class RegistryTests(unittest.TestCase):
             futures = [workers.submit(ModelRegistry(database).initialize) for _ in range(3)]
             for future in futures:
                 future.result(timeout=10)
-        self.assertEqual(len(ModelRegistry(database).list()), 8)
+        self.assertEqual(len(ModelRegistry(database).list()), 11)
 
     def test_api_crud_snapshots_and_restart(self):
         settings = Settings(self.root)
@@ -144,7 +144,7 @@ class RegistryTests(unittest.TestCase):
         with TestClient(create_app(settings)) as restarted:
             self.assertEqual(restarted.get(url).status_code, 404)
             self.assertEqual(restarted.get(f"/api/runs/{run['id']}").json(), run)
-            self.assertEqual(len(restarted.get("/api/capabilities").json()), 8)
+            self.assertEqual(len(restarted.get("/api/capabilities").json()), 11)
 
     def test_api_validation_does_not_echo_secrets_or_accept_nulls(self):
         with TestClient(create_app(Settings(self.root))) as client:
