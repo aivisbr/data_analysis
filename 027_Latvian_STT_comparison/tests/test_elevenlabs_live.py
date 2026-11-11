@@ -55,10 +55,12 @@ class ElevenLabsLiveTests(unittest.IsolatedAsyncioTestCase):
         self.socket = Socket()
         self.connections = []
         self.bad_setup = False
+        self.echo_model = None
 
         async def connect(uri, **kwargs):
             self.connections.append((uri, kwargs))
-            config = dict(model_id='scribe_v2_realtime', audio_format='pcm_24000', sample_rate=24000)
+            requested = parse_qs(urlparse(uri).query)['model_id'][0]
+            config = dict(model_id=self.echo_model or requested, audio_format='pcm_24000', sample_rate=24000)
             if self.bad_setup:
                 config['sample_rate'] = 16000
             self.socket.put('session_started', config=config)
@@ -67,9 +69,9 @@ class ElevenLabsLiveTests(unittest.IsolatedAsyncioTestCase):
         self.transport.start()
         self.addCleanup(self.transport.stop)
 
-    def request(self, settings=None):
-        entry = ModelEntry(provider='elevenlabs', mode='live', model_id='scribe_v2_realtime', display_name='Test',
-                           capability_profile_id='elevenlabs:scribe_v2_realtime:live', settings=settings or TranscriptionSettings())
+    def request(self, settings=None, model_id='scribe_v2_realtime', profile='elevenlabs:scribe_v2_realtime:live'):
+        entry = ModelEntry(provider='elevenlabs', mode='live', model_id=model_id, display_name='Test',
+                           capability_profile_id=profile, settings=settings or TranscriptionSettings())
         model = ModelSnapshot.from_entry(entry, effective=effective_settings(entry.provider, entry.settings))
         return LiveRequest(model=model, context=EventContext(run_id=uuid4(), reading='A', attempt_id=uuid4(),
                            model_entry_id=entry.id, segment_id=uuid4(), segment_index=0))
@@ -107,6 +109,36 @@ class ElevenLabsLiveTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(headers['additional_headers'], {'xi-api-key': 'synthetic-key'})
         await session.close()
         await session.close()
+        self.assertEqual(self.socket.closed, 1)
+
+    async def test_scribe_v3_live_uses_v2_realtime_profile_and_exact_id(self):
+        request = self.request(TranscriptionSettings(language_hint='lv-LV'), model_id='scribe_v3_live')
+        session = await ElevenLabsLiveAdapter(allow_paid=True).open_live(request)
+        self.assertEqual(session.config['model_id'], 'scribe_v3_live')
+        params = parse_qs(urlparse(self.connections[0][0]).query)
+        self.assertEqual(params['model_id'], ['scribe_v3_live'])
+        self.assertEqual(params['audio_format'], ['pcm_24000'])
+        self.assertEqual(params['commit_strategy'], ['manual'])
+        collector = asyncio.create_task(self.collect(session))
+        await session.send_audio(self.frame(request))
+        await session.flush()
+        events = await collector
+        self.assertEqual(events[-1].text, 'Rīga!')
+        self.assertIsInstance(events[-1], FinalTranscriptEvent)
+        await session.close()
+
+    async def test_unknown_id_wrong_profile_and_model_echo_mismatch_are_rejected(self):
+        for request in (self.request(model_id='scribe_v4_unknown'),
+                        self.request(model_id='scribe_v3_live', profile='elevenlabs:scribe_v3_live:live')):
+            with self.assertRaises(ProviderFailure) as caught:
+                await ElevenLabsLiveAdapter(allow_paid=True).open_live(request)
+            self.assertEqual(caught.exception.details.code, 'unavailable_model')
+        self.assertEqual(self.connections, [])
+        # A server acknowledging a different model is never accepted as a substitute.
+        self.echo_model = 'scribe_v2_realtime'
+        with self.assertRaises(ProviderFailure) as caught:
+            await ElevenLabsLiveAdapter(allow_paid=True).open_live(self.request(model_id='scribe_v3_live'))
+        self.assertEqual(caught.exception.details.code, 'unsupported_settings')
         self.assertEqual(self.socket.closed, 1)
 
     async def test_repeated_speech_across_commits_is_preserved(self):

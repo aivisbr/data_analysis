@@ -1,4 +1,4 @@
-"""Scribe v2 native file transcription; no SDK imports or clients at startup."""
+"""Scribe v2/v3 native file transcription; no SDK imports or clients at startup."""
 import asyncio
 import hashlib
 from importlib.metadata import version
@@ -11,6 +11,8 @@ from app.providers.prepared_audio import failure, read_prepared_audio
 from app.providers.settings import effective_settings
 
 PROFILE = 'elevenlabs:scribe_v2:file'
+# Exact IDs sharing the Create transcript API parameters and the scribe_v2 file profile.
+MODELS = ('scribe_v2', 'scribe_v3')
 
 
 def normalize_response(response):
@@ -62,8 +64,9 @@ class ElevenLabsFileAdapter:
     async def transcribe_file(self, request):
         model = request.model
         if (model.provider != Provider.ELEVENLABS or model.mode != Mode.FILE or
-                model.model_id != 'scribe_v2' or model.capability_profile_id != PROFILE):
-            raise failure(ErrorCode.UNAVAILABLE_MODEL, 'Šis adapteris atbalsta tikai scribe_v2 faila režīmā.')
+                model.model_id not in MODELS or model.capability_profile_id != PROFILE):
+            raise failure(ErrorCode.UNAVAILABLE_MODEL,
+                          'Šis adapteris atbalsta tikai scribe_v2 un scribe_v3 faila režīmā ar scribe_v2 profilu.')
         settings = model.effective_settings
         try:
             resolved = effective_settings(Provider.ELEVENLABS, model.requested_settings)

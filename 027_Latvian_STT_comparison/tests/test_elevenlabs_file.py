@@ -39,10 +39,10 @@ class ElevenLabsFileTests(unittest.IsolatedAsyncioTestCase):
             wav.setparams((1, 2, 24000, 0, 'NONE', 'not compressed'))
             wav.writeframes(b'\x00\x01' * frames)
 
-    def request(self, settings=None):
+    def request(self, settings=None, model_id='scribe_v2', profile='elevenlabs:scribe_v2:file'):
         settings = settings or TranscriptionSettings()
-        entry = ModelEntry(provider='elevenlabs', model_id='scribe_v2', display_name='Scribe',
-            mode='file', capability_profile_id='elevenlabs:scribe_v2:file', settings=settings)
+        entry = ModelEntry(provider='elevenlabs', model_id=model_id, display_name='Scribe',
+            mode='file', capability_profile_id=profile, settings=settings)
         model = ModelSnapshot.from_entry(entry, effective=effective_settings(entry.provider, settings))
         return FileRequest(model=model, audio_path=self.path, mime_type='audio/wav',
             expected_audio_sha256=hashlib.sha256(self.path.read_bytes()).hexdigest(),
@@ -80,6 +80,21 @@ class ElevenLabsFileTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn('Āgenskalns'.encode(), wire.content)
         self.assertNotIn(b'name="source_url"', wire.content)
         self.assertTrue(self.clients[0].is_closed)
+
+    async def test_scribe_v3_uses_v2_file_profile_and_exact_id(self):
+        request = self.request(TranscriptionSettings(language_hint='lv-LV'), model_id='scribe_v3')
+        outcome = await self.adapter().transcribe_file(request)
+        self.assertEqual(outcome.text, result_body()['text'])
+        self.assertEqual(outcome.execution.model_id, 'scribe_v3')
+        self.assertIn(b'name="model_id"\r\n\r\nscribe_v3\r\n', self.calls[0].content)
+        self.assertNotIn(b'scribe_v2', self.calls[0].content)
+        before = len(self.calls)
+        for wrong in (self.request(model_id='scribe_v3', profile='elevenlabs:scribe_v3:file'),
+                      self.request(model_id='scribe_v4_unknown')):
+            with self.assertRaises(ProviderFailure) as failure:
+                await self.adapter().transcribe_file(wrong)
+            self.assertEqual(failure.exception.details.code, 'unavailable_model')
+        self.assertEqual(len(self.calls), before)
 
     async def test_auto_language_smart_and_empty_text(self):
         outcome = await self.adapter(lambda _: httpx.Response(200, json=result_body(''))).transcribe_file(

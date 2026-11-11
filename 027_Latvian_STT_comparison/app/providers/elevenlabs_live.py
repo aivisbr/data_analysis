@@ -9,7 +9,9 @@ from app.contracts import (Provider, Mode, ErrorCode, ErrorDetails,
 from app.providers.base import ProviderFailure
 from app.providers.settings import effective_settings
 
-MODEL = 'scribe_v2_realtime'
+# Exact realtime IDs sharing one Realtime API protocol and the scribe_v2_realtime profile.
+MODELS = ('scribe_v2_realtime', 'scribe_v3_live')
+PROFILE_ID = 'elevenlabs:scribe_v2_realtime:live'
 RATE = 24000
 
 
@@ -20,8 +22,9 @@ def failure(code, message):
 def live_config(request):
     model = request.model
     if (model.provider != Provider.ELEVENLABS or model.mode != Mode.LIVE or
-            model.model_id != MODEL or model.capability_profile_id != f'elevenlabs:{MODEL}:live'):
-        raise failure(ErrorCode.UNAVAILABLE_MODEL, 'Šis adapteris atbalsta tikai scribe_v2_realtime.')
+            model.model_id not in MODELS or model.capability_profile_id != PROFILE_ID):
+        raise failure(ErrorCode.UNAVAILABLE_MODEL,
+                      'Šis adapteris atbalsta tikai scribe_v2_realtime un scribe_v3_live ar scribe_v2_realtime profilu.')
     settings = model.effective_settings
     try:
         resolved = effective_settings(Provider.ELEVENLABS, model.requested_settings)
@@ -33,7 +36,7 @@ def live_config(request):
             any(len(term) > 20 for term in settings.keywords)):
         raise failure(ErrorCode.UNSUPPORTED_SETTINGS,
                       'ElevenLabs tiešraide atbalsta manuālus apstiprinājumus un līdz 50 terminiem, katru līdz 20 rakstzīmēm; uzvedne un latentuma iestatījumi nav atbalstīti.')
-    config = dict(model_id=MODEL, audio_format='pcm_24000', sample_rate=RATE,
+    config = dict(model_id=model.model_id, audio_format='pcm_24000', sample_rate=RATE,
                   commit_strategy='manual', include_timestamps=False,
                   include_language_detection=False, no_verbatim=settings.formatting == 'smart')
     if settings.language_hint:

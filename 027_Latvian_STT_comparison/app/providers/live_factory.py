@@ -13,7 +13,7 @@ def paid_live_factory(model, *, elevenlabs_enabled=False):
     if model.provider == Provider.GEMINI and model.model_id == 'gemini-3.5-transcribe-live':
         from app.providers.gemini_live import GeminiLiveAdapter
         return GeminiLiveAdapter(allow_paid=True,final_timeout_seconds=60)
-    if model.provider == Provider.ELEVENLABS and model.model_id == 'scribe_v2_realtime':
+    if model.provider == Provider.ELEVENLABS and model.model_id in ('scribe_v2_realtime', 'scribe_v3_live'):
         from app.providers.elevenlabs_live import ElevenLabsLiveAdapter
         return ElevenLabsLiveAdapter(allow_paid=elevenlabs_enabled)
     raise ProviderFailure(ErrorDetails(code=ErrorCode.UNAVAILABLE_MODEL,

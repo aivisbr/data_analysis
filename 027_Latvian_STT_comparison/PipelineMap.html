@@ -1,0 +1,366 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Diktāts Pipeline Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+<style>
+/* Layout: one reading column; diagrams break wider; storage map as a two-column path/meaning ledger. */
+:root {
+  --paper: #F3F5F8;
+  --panel: #FFFFFF;
+  --sunk: #E8ECF2;
+  --ink: #18202C;
+  --muted: #5A6678;
+  --line: #CDD4DE;
+  --line-strong: #8E9AAB;
+  --accent: #9E2B3A;          /* Latvian carmine: marks the scribe_v3 path */
+  --accent-soft: #F6E6E9;
+  --display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --body: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #11151C; --panel: #1A2029; --sunk: #222A35; --ink: #E5E9EF; --muted: #9BA6B6;
+    --line: #333D4B; --line-strong: #6C7889; --accent: #E58893; --accent-soft: #3A2329;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #11151C; --panel: #1A2029; --sunk: #222A35; --ink: #E5E9EF; --muted: #9BA6B6;
+  --line: #333D4B; --line-strong: #6C7889; --accent: #E58893; --accent-soft: #3A2329;
+  color-scheme: dark;
+}
+
+body {
+  background: var(--paper); color: var(--ink); font-family: var(--body);
+  font-size: 15.5px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.page { max-width: 1000px; margin: 0 auto; padding-block: 48px 72px; display: grid; gap: 56px; }
+.prose { max-width: 66ch; }
+h1, h2 { font-family: var(--display); font-weight: 600; text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1rem; font-weight: 600; margin: 0; }
+p { margin: 0; }
+.eyebrow { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+section { display: grid; gap: 18px; }
+header { display: grid; gap: 14px; }
+.lede { font-size: 1.1rem; color: var(--ink); }
+.muted { color: var(--muted); }
+code, .path { font-family: var(--mono); font-size: .88em; }
+code { background: var(--sunk); padding: 1px 5px; border-radius: 4px; }
+
+figure { margin: 0; display: grid; gap: 10px; }
+.diagram { overflow-x: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 16px; }
+.diagram svg { display: block; width: 100%; min-width: 760px; height: auto; color: var(--ink); }
+figcaption { font-size: 14px; color: var(--muted); max-width: 72ch; }
+
+/* SVG parts, colored through tokens */
+.bx { fill: var(--panel); stroke: var(--line-strong); stroke-width: 1.2; }
+.st { fill: var(--sunk); stroke: var(--line-strong); stroke-width: 1.2; }
+.ext { fill: var(--panel); stroke: var(--line-strong); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.rej { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.hl { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.6; }
+.t { font-family: var(--body); font-size: 13.5px; font-weight: 600; fill: var(--ink); }
+.s { font-family: var(--mono); font-size: 11.5px; fill: var(--muted); }
+.lbl { font-family: var(--body); font-size: 11.5px; fill: var(--muted); }
+.acc { fill: var(--accent); }
+.ar { stroke: currentColor; stroke-width: 1.3; fill: none; }
+.ar-acc { stroke: var(--accent); stroke-width: 1.5; fill: none; }
+
+/* Comparison table */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; min-width: 620px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+thead th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+tbody th { font-weight: 500; color: var(--muted); width: 22%; }
+td code { white-space: nowrap; }
+
+/* Storage ledger */
+.ledger { display: grid; border-top: 1px solid var(--line); }
+.row { display: grid; grid-template-columns: minmax(0, 23rem) minmax(0, 1fr); gap: 6px 24px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.row .path { color: var(--ink); overflow-wrap: anywhere; }
+.row.sub .path { padding-left: 1.6rem; }
+.row.group { border-bottom: none; padding-top: 22px; }
+.row.group h3 { grid-column: 1 / -1; font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent); letter-spacing: .02em; }
+.row p { color: var(--muted); font-size: 14.5px; }
+.tag { display: inline-block; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); margin-right: 6px; vertical-align: 1px; }
+
+/* Testing cards: four kinds, one grid */
+.tests { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.test { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; display: grid; gap: 8px; align-content: start; }
+.test .where { font-family: var(--mono); font-size: 12.5px; color: var(--accent); overflow-wrap: anywhere; }
+.test p { font-size: 14.5px; color: var(--muted); }
+pre { margin: 0; font-family: var(--mono); font-size: 12.5px; background: var(--sunk); padding: 10px 12px; border-radius: 6px; overflow-x: auto; }
+
+@media (max-width: 680px) {
+  .row { grid-template-columns: 1fr; }
+  .row.sub .path { padding-left: .9rem; }
+  .tests { grid-template-columns: 1fr; }
+}
+</style>
+
+<main class="page">
+
+<header>
+  <span class="eyebrow">p7_diktats · local FastAPI app on 127.0.0.1:8000</span>
+  <h1>Diktāts Pipeline Map</h1>
+  <p class="lede prose">The app runs the same Latvian dictation reading through several speech-to-text models and scores each transcript against the ground truth. Audio reaches it in one of two ways: a live recording from a browser tab, or an uploaded audio file. Everything it produces is saved on this laptop under one storage root. Audio goes to a provider only when that run's paid flag is switched on.</p>
+  <p class="muted prose">The storage root is the project folder, <span class="path">C:\Users\a.brutans\codex_proj\p7_diktats</span>, unless <code>P7_STORAGE_ROOT</code> is set. Reading A is saved in <span class="path">Try1/</span> and reading D in <span class="path">Try2/</span>, and the two are saved and scored separately.</p>
+</header>
+
+<section>
+  <span class="eyebrow">Path 1</span>
+  <h2>Live recording (Tiešraide)</h2>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 960 310" role="img" aria-label="Live path: browser tab audio is streamed to live_api and live_distribution, which starts one worker per enabled model; each worker's adapter streams to the provider's realtime API. The run's audio and config go to runs/run/TryN, and the final text of each model goes to raw and editable text files.">
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+        </defs>
+        <rect class="bx" x="10" y="30" width="160" height="78" rx="6"/>
+        <text class="t" x="90" y="63" text-anchor="middle">Browser tab</text>
+        <text class="s" x="90" y="83" text-anchor="middle">capture.js · worklet</text>
+
+        <rect class="bx" x="250" y="30" width="200" height="78" rx="6"/>
+        <text class="t" x="350" y="63" text-anchor="middle">live_api.py</text>
+        <text class="s" x="350" y="83" text-anchor="middle">live_distribution.py</text>
+
+        <rect class="bx" x="530" y="30" width="200" height="78" rx="6"/>
+        <text class="t" x="630" y="63" text-anchor="middle">live_factory.py</text>
+        <text class="s" x="630" y="83" text-anchor="middle">*_live.py adapters</text>
+
+        <rect class="ext" x="810" y="30" width="140" height="78" rx="6"/>
+        <text class="t" x="880" y="63" text-anchor="middle">Provider</text>
+        <text class="s" x="880" y="83" text-anchor="middle">realtime API</text>
+
+        <line class="ar" x1="170" y1="69" x2="248" y2="69" marker-end="url(#a1)"/>
+        <text class="lbl" x="210" y="59" text-anchor="middle">PCM frames</text>
+        <line class="ar" x1="450" y1="69" x2="528" y2="69" marker-end="url(#a1)"/>
+        <text class="lbl" x="490" y="59" text-anchor="middle">1 worker / model</text>
+        <line class="ar" x1="730" y1="69" x2="808" y2="69" marker-end="url(#a1)"/>
+        <text class="lbl" x="770" y="59" text-anchor="middle">WebSocket</text>
+        <text class="lbl" x="770" y="92" text-anchor="middle">paid flag</text>
+
+        <rect class="st" x="10" y="208" width="160" height="78" rx="6"/>
+        <text class="t" x="90" y="241" text-anchor="middle">data/app.sqlite3</text>
+        <text class="s" x="90" y="261" text-anchor="middle">model registry</text>
+        <line class="ar" x1="150" y1="208" x2="268" y2="110" marker-end="url(#a1)"/>
+        <text class="lbl" x="196" y="150" text-anchor="end">enabled models,</text>
+        <text class="lbl" x="196" y="165" text-anchor="end">frozen settings</text>
+
+        <rect class="st" x="250" y="208" width="200" height="90" rx="6"/>
+        <text class="t" x="350" y="236" text-anchor="middle">runs/&lt;run&gt;/TryN/</text>
+        <text class="s" x="350" y="256" text-anchor="middle">audio.wav</text>
+        <text class="s" x="350" y="272" text-anchor="middle">source_frames.jsonl</text>
+        <text class="s" x="350" y="288" text-anchor="middle">distribution.json</text>
+        <line class="ar" x1="350" y1="108" x2="350" y2="206" marker-end="url(#a1)"/>
+        <text class="lbl" x="360" y="162">archives audio + config</text>
+
+        <rect class="st" x="530" y="208" width="200" height="78" rx="6"/>
+        <text class="t" x="630" y="241" text-anchor="middle">TryN/raw/ · editable/</text>
+        <text class="s" x="630" y="261" text-anchor="middle">one .txt per model</text>
+        <line class="ar" x1="630" y1="108" x2="630" y2="206" marker-end="url(#a1)"/>
+        <text class="lbl" x="640" y="162">final text, on Stop</text>
+      </svg>
+    </div>
+    <figcaption>When you press Start, each enabled live model gets its own worker with a frozen copy of its settings, so one model failing does not stop the others. The original audio is archived while you record; while paused it is <span class="path">audio.partial.wav</span>. The raw and editable transcripts are written when you press Stop. Recordings made in local-only mode stay in your browser's downloads and never enter the server history.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="eyebrow">Path 2</span>
+  <h2>Audio file (Audio fails)</h2>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 960 310" role="img" aria-label="File path: an uploaded audio file is converted by audio.py with FFmpeg into 24 kHz mono chunks stored under data/audio. file_jobs.py sends the hash-checked chunks through each file adapter to the provider's transcription API and saves results under runs/run.">
+        <defs>
+          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+        </defs>
+        <rect class="bx" x="10" y="30" width="160" height="78" rx="6"/>
+        <text class="t" x="90" y="63" text-anchor="middle">Audio file</text>
+        <text class="s" x="90" y="83" text-anchor="middle">.wav / .mp3 upload</text>
+
+        <rect class="bx" x="250" y="30" width="200" height="78" rx="6"/>
+        <text class="t" x="350" y="63" text-anchor="middle">audio.py</text>
+        <text class="s" x="350" y="83" text-anchor="middle">FFmpeg → 24 kHz mono</text>
+
+        <rect class="bx" x="530" y="30" width="200" height="78" rx="6"/>
+        <text class="t" x="630" y="63" text-anchor="middle">file_jobs.py</text>
+        <text class="s" x="630" y="83" text-anchor="middle">*_file.py adapters</text>
+
+        <rect class="ext" x="810" y="30" width="140" height="78" rx="6"/>
+        <text class="t" x="880" y="63" text-anchor="middle">Provider</text>
+        <text class="s" x="880" y="83" text-anchor="middle">transcription API</text>
+
+        <line class="ar" x1="170" y1="69" x2="248" y2="69" marker-end="url(#a2)"/>
+        <text class="lbl" x="210" y="59" text-anchor="middle">upload</text>
+        <line class="ar" x1="450" y1="69" x2="528" y2="69" marker-end="url(#a2)"/>
+        <text class="lbl" x="490" y="59" text-anchor="middle">prepared ID</text>
+        <line class="ar" x1="730" y1="69" x2="808" y2="69" marker-end="url(#a2)"/>
+        <text class="lbl" x="770" y="59" text-anchor="middle">HTTPS</text>
+        <text class="lbl" x="770" y="92" text-anchor="middle">paid flag</text>
+
+        <rect class="st" x="250" y="208" width="200" height="90" rx="6"/>
+        <text class="t" x="350" y="236" text-anchor="middle">data/audio/</text>
+        <text class="s" x="350" y="256" text-anchor="middle">uploads/&lt;id&gt;/original.*</text>
+        <text class="s" x="350" y="272" text-anchor="middle">prepared/&lt;id&gt;/interval.wav</text>
+        <text class="s" x="350" y="288" text-anchor="middle">prepared/&lt;id&gt;/chunk_NNNN.wav</text>
+        <line class="ar" x1="350" y1="108" x2="350" y2="206" marker-end="url(#a2)"/>
+        <text class="lbl" x="340" y="162" text-anchor="end">stores</text>
+
+        <line class="ar" x1="450" y1="222" x2="546" y2="110" marker-end="url(#a2)"/>
+        <text class="lbl" x="522" y="148">hash-checked</text>
+        <text class="lbl" x="522" y="163">chunks</text>
+
+        <rect class="st" x="530" y="208" width="200" height="90" rx="6"/>
+        <text class="t" x="630" y="236" text-anchor="middle">runs/&lt;run&gt;/</text>
+        <text class="s" x="630" y="256" text-anchor="middle">file_job.json</text>
+        <text class="s" x="630" y="272" text-anchor="middle">TryN/raw/*.txt</text>
+        <text class="s" x="630" y="288" text-anchor="middle">TryN/editable/*.txt</text>
+        <line class="ar" x1="660" y1="108" x2="660" y2="206" marker-end="url(#a2)"/>
+        <text class="lbl" x="670" y="162">results per chunk</text>
+      </svg>
+    </div>
+    <figcaption>An upload is converted once into one interval and an ordered list of chunks. Every model's worker reuses that same prepared ID, and each chunk's SHA-256 is checked before it is sent, so all models hear exactly the same audio. A retry creates a new attempt from the original snapshot. ElevenLabs needs every chunk to be at least 100 ms long. The model list comes from the same <span class="path">data/app.sqlite3</span> registry as live runs.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <span class="eyebrow">This session's change</span>
+  <h2>How scribe_v3 gets through</h2>
+  <p class="prose">The new ElevenLabs IDs don't have their own capability profiles. They are registry entries that reuse the Scribe v2 profile, and the code only lets through IDs from a short fixed list. The ID you choose is sent unchanged. Live sessions also check that ElevenLabs reports the same ID back.</p>
+  <figure>
+    <div class="diagram">
+      <svg viewBox="0 0 960 270" role="img" aria-label="scribe_v3_live check: the registry entry carries model ID scribe_v3_live with the scribe_v2_realtime profile. live_factory accepts only IDs from its exact list and requires the ElevenLabs paid flag; unknown IDs are rejected with no fallback. The adapter sends the ID unchanged, and ElevenLabs' session_started reply must echo the same ID, otherwise the session is closed.">
+        <defs>
+          <marker id="a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="currentColor"/></marker>
+        </defs>
+        <rect class="hl" x="10" y="30" width="210" height="92" rx="6"/>
+        <text class="t" x="115" y="58" text-anchor="middle">Registry entry</text>
+        <text class="s acc" x="115" y="80" text-anchor="middle">scribe_v3_live</text>
+        <text class="s" x="115" y="98" text-anchor="middle">profile scribe_v2_realtime</text>
+
+        <rect class="bx" x="280" y="30" width="200" height="92" rx="6"/>
+        <text class="t" x="380" y="58" text-anchor="middle">live_factory.py</text>
+        <text class="s" x="380" y="80" text-anchor="middle">ID in exact list?</text>
+        <text class="s" x="380" y="98" text-anchor="middle">ElevenLabs paid flag?</text>
+
+        <rect class="bx" x="540" y="30" width="190" height="92" rx="6"/>
+        <text class="t" x="635" y="58" text-anchor="middle">elevenlabs_live.py</text>
+        <text class="s" x="635" y="80" text-anchor="middle">sends model_id</text>
+        <text class="s" x="635" y="98" text-anchor="middle">24 kHz · 20 s commits</text>
+
+        <rect class="ext" x="800" y="30" width="150" height="92" rx="6"/>
+        <text class="t" x="875" y="58" text-anchor="middle">ElevenLabs</text>
+        <text class="s" x="875" y="80" text-anchor="middle">Realtime API</text>
+        <text class="s" x="875" y="98" text-anchor="middle">session_started</text>
+
+        <line class="ar" x1="220" y1="76" x2="278" y2="76" marker-end="url(#a3)"/>
+        <text class="lbl" x="249" y="66" text-anchor="middle">Start</text>
+        <line class="ar" x1="480" y1="76" x2="538" y2="76" marker-end="url(#a3)"/>
+        <text class="lbl" x="509" y="66" text-anchor="middle">yes</text>
+        <line class="ar" x1="730" y1="58" x2="798" y2="58" marker-end="url(#a3)"/>
+        <text class="lbl" x="765" y="48" text-anchor="middle">connect</text>
+        <line class="ar" x1="798" y1="100" x2="732" y2="100" marker-end="url(#a3)"/>
+        <text class="lbl" x="765" y="116" text-anchor="middle">echoes ID</text>
+
+        <line class="ar-acc" x1="380" y1="122" x2="380" y2="186" marker-end="url(#a3)"/>
+        <text class="lbl" x="390" y="158">unknown ID</text>
+        <rect class="rej" x="280" y="188" width="200" height="62" rx="6"/>
+        <text class="t acc" x="380" y="214" text-anchor="middle">Rejected</text>
+        <text class="s" x="380" y="234" text-anchor="middle">no fallback to v2</text>
+
+        <line class="ar-acc" x1="635" y1="122" x2="635" y2="186" marker-end="url(#a3)"/>
+        <text class="lbl" x="645" y="158">echo ≠ sent ID</text>
+        <rect class="rej" x="540" y="188" width="190" height="62" rx="6"/>
+        <text class="t acc" x="635" y="214" text-anchor="middle">Session closed</text>
+        <text class="s" x="635" y="234" text-anchor="middle">unsupported_settings</text>
+      </svg>
+    </div>
+    <figcaption>The live path for <span class="path">scribe_v3_live</span>. The audio-file path for <span class="path">scribe_v3</span> works the same way, with two differences: <span class="path">file_jobs.py</span> chooses the adapter by provider, and the ID check happens inside <span class="path">elevenlabs_file.py</span>. Both new IDs are added through the app's "Pievienot modeli" (add model) dialog, not written into the code's default list.</figcaption>
+  </figure>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th></th><th>Live</th><th>Audio files</th></tr></thead>
+      <tbody>
+        <tr><th>Model ID to type</th><td><code>scribe_v3_live</code></td><td><code>scribe_v3</code></td></tr>
+        <tr><th>Profile to pick</th><td><code>scribe_v2_realtime</code></td><td><code>scribe_v2</code></td></tr>
+        <tr><th>IDs the code accepts</th><td><code>scribe_v2_realtime</code>, <code>scribe_v3_live</code></td><td><code>scribe_v2</code>, <code>scribe_v3</code></td></tr>
+        <tr><th>Paid flags needed</th><td><code>P7_ALLOW_PAID_LIVE_TRANSCRIPTION</code> and <code>P7_ALLOW_PAID_ELEVENLABS_LIVE</code></td><td><code>P7_ALLOW_PAID_TRANSCRIPTION</code></td></tr>
+        <tr><th>Proof of the ID used</th><td><span class="path">TryN/distribution.json</span></td><td><span class="path">file_job.json</span> execution record</td></tr>
+        <tr><th>Code</th><td><span class="path">app/providers/live_factory.py</span>, <span class="path">elevenlabs_live.py</span></td><td><span class="path">app/providers/elevenlabs_file.py</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="muted prose"><code>start_paid.cmd</code> turns these flags on for its own CMD window only. Started any other way, the app keeps them off, and only free DEMO runs work.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Where things live</span>
+  <h2>Storage map</h2>
+  <p class="prose">All paths are relative to the storage root. Raw transcripts are never edited. The editable copies are the ones you correct, and every evaluation re-reads files from disk instead of using cached text.</p>
+  <div class="ledger">
+    <div class="row group"><h3>data/ — app state and prepared audio</h3></div>
+    <div class="row"><span class="path">data/app.sqlite3</span><p>The model registry: the Live and Audio-file lists, each model's settings, and a frozen snapshot of the models used in each run. Deleting a model never deletes past runs.</p></div>
+    <div class="row"><span class="path">data/audio/uploads/&lt;id&gt;/</span><p><span class="path">original.wav|mp3</span> exactly as uploaded, plus <span class="path">preview.wav</span> and <span class="path">metadata.json</span>.</p></div>
+    <div class="row"><span class="path">data/audio/prepared/&lt;id&gt;/</span><p>The chosen interval as <span class="path">interval.wav</span> and <span class="path">chunk_0000.wav…</span> at 24 kHz mono, with a SHA-256 for each chunk in <span class="path">metadata.json</span>.</p></div>
+    <div class="row"><span class="path">data/evaluation_inputs/&lt;id&gt;/</span><p>Server-side copies of transcript files you uploaded for scoring.</p></div>
+    <div class="row"><span class="path">data/rehearsals/T026_&lt;id&gt;/</span><p>Isolated rehearsal packages made by <span class="path">scripts/rehearse_workflow.py</span>. These never touch real runs.</p></div>
+
+    <div class="row group"><h3>runs/ — one folder per run, live or file</h3></div>
+    <div class="row"><span class="path">runs/&lt;run&gt;/metadata.json</span><p>The run record: models with requested and effective settings, attempts, statuses and errors. Provisional text is kept here as a checkpoint.</p></div>
+    <div class="row"><span class="path">runs/&lt;run&gt;/file_job.json</span><p><span class="tag">file</span>Chunk order, hashes, and the provider, model ID and SDK version used.</p></div>
+    <div class="row"><span class="path">runs/&lt;run&gt;/Try1/ · Try2/</span><p>Reading A goes in Try1 and reading D in Try2. A live recording of A and one of D are separate runs.</p></div>
+    <div class="row sub"><span class="path">audio.wav · source_frames.jsonl</span><p><span class="tag">live</span>The original recording and its frame log. While paused it is <span class="path">audio.partial.wav</span>.</p></div>
+    <div class="row sub"><span class="path">distribution.json</span><p><span class="tag">live</span>Each model's config for each segment: SDK version, commit policy, padding, and safe error codes.</p></div>
+    <div class="row sub"><span class="path">raw/*.txt</span><p>The exact model output for each model attempt. Never overwritten.</p></div>
+    <div class="row sub"><span class="path">editable/*.txt</span><p>A copy you can correct before scoring.</p></div>
+
+    <div class="row group"><h3>evaluations/ — one folder per scoring</h3></div>
+    <div class="row"><span class="path">evaluations/&lt;id&gt;/</span><p><span class="path">ground_truth.txt</span>, <span class="path">inputs/000.txt…</span> and <span class="path">metadata.json</span> are a frozen snapshot of the inputs. <span class="path">legacy_scores.json</span> holds WER/CER, <span class="path">diagnostics.json</span> holds punctuation, case and NFC checks, and <span class="path">results.json/.csv</span> are the exports. A changed source file needs a new evaluation; old ones are never overwritten.</p></div>
+
+    <div class="row group"><h3>Read-only references</h3></div>
+    <div class="row"><span class="path">example/</span><p>The ground truth <span class="path">LSMzinas_lav_GT.txt</span> and older transcripts from other tools in <span class="path">example/tests/</span>. Never edited.</p></div>
+    <div class="row"><span class="path">docs/api_test_usage.json</span><p>The ledger of paid test runs and spending.</p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Testing</span>
+  <h2>Four kinds of test, four places</h2>
+  <div class="tests">
+    <div class="test">
+      <h3>Offline unit tests</h3>
+      <span class="where">tests/test_*.py</span>
+      <p>These run the real SDKs against fake WebSocket and HTTP transports. No keys, network or cost, and nothing is written outside temporary folders.</p>
+      <pre>.venv\Scripts\python.exe -m unittest discover -s tests -v</pre>
+      <p>Always run them through <code>discover</code>, because some test modules import each other by bare name.</p>
+    </div>
+    <div class="test">
+      <h3>DEMO runs</h3>
+      <span class="where">runs/&lt;run&gt;/ (marked [DEMO])</span>
+      <p>Free runs with synthetic text through the full app flow. They are saved like real runs, and the history labels them DEMO so they are never mistaken for paid results.</p>
+    </div>
+    <div class="test">
+      <h3>Workflow rehearsal</h3>
+      <span class="where">data/rehearsals/T026_&lt;id&gt;/</span>
+      <p>Synthetic PCM and injected text, used to practise import, editing and scoring in the browser. Each run produces a <span class="path">report.json</span> and a <span class="path">ui/</span> folder of files to import.</p>
+      <pre>.venv\Scripts\python.exe scripts/rehearse_workflow.py</pre>
+    </div>
+    <div class="test">
+      <h3>Paid provider tests</h3>
+      <span class="where">runs/&lt;run&gt;/ + docs/api_test_usage.json</span>
+      <p>You run these yourself from <code>start_paid.cmd</code>. The plan is in <span class="path">docs/T024_PAID_TEST_MATRIX.md</span> and the findings in <span class="path">docs/T025_SMOKE_RESULTS.md</span>. ElevenLabs is outside the $10 OpenAI/Gemini budget, so log it separately.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+</body></html>

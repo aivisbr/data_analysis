@@ -107,6 +107,9 @@ class RoutingTests(unittest.IsolatedAsyncioTestCase):
             adapter=paid_live_factory(model)
             self.assertFalse(adapter.allow_paid)
             self.assertTrue(paid_live_factory(model,elevenlabs_enabled=True).allow_paid)
+            v3=model.evolve(model_id='scribe_v3_live')
+            self.assertFalse(paid_live_factory(v3).allow_paid)
+            self.assertTrue(paid_live_factory(v3,elevenlabs_enabled=True).allow_paid)
             with self.assertRaises(ProviderFailure):
                 paid_live_factory(model.evolve(model_id='retired-unknown'))
 
